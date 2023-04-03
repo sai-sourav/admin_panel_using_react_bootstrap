@@ -1,23 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import { useContext, useState } from "react";
+import "./App.css";
+import AddProduct from "./Components/addProductForm/addProduct";
+import Cart from "./Components/Cart/Cart";
+import Layout from "./Components/Layout/Layout";
+import ProductList from "./Components/ProductList/ProductList";
+import CartContext from "./Context/cart-context";
 
 function App() {
+  const cartctx = useContext(CartContext)
+  const [refresh, changerefresh] = useState(true);
+
+  const updateRefresh = () => {
+    changerefresh((prev) => !prev)
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Layout>
+        <AddProduct refresh={updateRefresh} />
+        <ProductList refresh={refresh} />
+      </Layout>
+      <Cart show={cartctx.showCart} onHide={() => cartctx.updateshowCart()} />
     </div>
   );
 }
